@@ -1,9 +1,12 @@
+import BannerBar from "../../Components/Banner/BannerBar/BannerBar";
+import Carousel from "../../Components/Banner/Carousel/Carousel";
 
 
 const HomePage = () => {
     return (
         <div>
-           <h1>wellcome in my home page</h1> 
+          <BannerBar/>
+          <Carousel/>
         </div>
     );
 };

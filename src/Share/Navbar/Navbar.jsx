@@ -1,6 +1,7 @@
 import { BsSearchHeart } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoCartOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <>
@@ -34,7 +35,7 @@ const Navbar = () => {
         <div>
             <div className="flex items-center gap-4">
                 <FaRegUserCircle className="text-3xl"/>
-            <h1 className="text-3xl  bg-gradient-to-r from-pink-500 to-pink-900 text-transparent bg-clip-text "> <span>Sign in </span> / <span>Sign Up</span> </h1>
+            <h1 className="text-3xl  bg-gradient-to-r from-pink-500 to-pink-900 text-transparent bg-clip-text "> <span ><Link to='/sign-in' className=" btn-link ">Sign in</Link> </span> / <span ><Link to='/sign-up' className=" btn-link ">Sign up</Link> </span></h1>
             </div>
         </div>
 

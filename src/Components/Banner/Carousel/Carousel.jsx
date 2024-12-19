@@ -28,7 +28,7 @@ const Carousel = () => {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        <SwiperSlide><Slides image={bgImg1} text="Your glow, your confidence, your story."></Slides></SwiperSlide>
+        <SwiperSlide><Slides image={bgImg1} text='Your glow, your confidence, your story.'></Slides></SwiperSlide>
         <SwiperSlide><Slides image={bgImg2} text='Softness and light, perfected for you.'></Slides></SwiperSlide>
         <SwiperSlide><Slides image={bgImg3} text='Discover the art of luxurious self-care.'></Slides></SwiperSlide>
         

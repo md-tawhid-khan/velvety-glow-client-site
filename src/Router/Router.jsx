@@ -4,6 +4,7 @@ import Main from "../Layout/Main";
 import HomePage from "../Pages/HomePage/HomePage";
 import Signin from "../Pages/Authentication/SingIn/Signin";
 import Registration from "../Pages/Authentication/Registration/Registration";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 
 
 
@@ -11,6 +12,7 @@ const router = createBrowserRouter([
     {
       path: "/",
       element: <Main/>,
+      errorElement:<ErrorPage/>,
       children:[
         {
             index: 1,

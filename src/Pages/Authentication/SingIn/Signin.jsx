@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import useAuth from "../../../CustomeHook/useAuth";
 import signinImg from "../../../assets/signin.jpg"
@@ -8,6 +8,10 @@ import signinImg from "../../../assets/signin.jpg"
 
 const Signin = () => {
  const {signin,signInGoogle }=useAuth()
+ const location=useLocation()
+ const navigate=useNavigate()
+
+ const from=location.state || ('/') ;
 
 // --------sing in form work -----------
   const submitForm=async(e)=>{
@@ -18,6 +22,7 @@ const Signin = () => {
    try{
     const result=await signin(email,password)
     console.log(result)
+    navigate(from,{replace:true})
    }
    catch(error){
     console.log(error.message)
@@ -31,6 +36,7 @@ const Signin = () => {
     try{
       const result=await signInGoogle()
       console.log(result)
+      navigate(from,{replace:true})
     }
     catch(error){
       console.log(error.message)

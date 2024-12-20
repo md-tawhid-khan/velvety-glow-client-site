@@ -1,20 +1,49 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import registerImg from "../../../assets/registration.jpg"
 import { FaGoogle } from "react-icons/fa";
 import useAuth from "../../../CustomeHook/useAuth";
+import { useState } from "react";
+import { uploadImg } from "../../../ImageApi/ImageApi";
 
 const Registration = () => {
- const {createUser,signInGoogle}=useAuth()
+ const {createUser,signInGoogle,updateUsersProfile}=useAuth()
+ const [file,setFile]=useState(null)
+ const location=useLocation()
+ const navigate=useNavigate()
+
+ const from=location.state || ('/') ;
+
+ const handleFileChange = (e) => {
+  const selectedFile = e.target.files[0]; // Access the first file
+  if (selectedFile) {
+    console.log("Selected File:", selectedFile); // Log the file details
+    setFile(selectedFile); // Store file in state if needed
+  } else {
+    console.error("No file selected.");
+  }
+};
 
  const signUpSubmit=async(e)=>{
   e.preventDefault()
   const form=e.target;
   const name=form.name.value;
+  const image=file;
+  if (!image) {
+    alert("Please select a file before submitting!");
+    return;
+  }
   const email=form.email.value;
   const password=form.password.value;
+  console.log({name,image})
   try{
+    
+    const image_url=await uploadImg(image)
+    // console.log({image_url})
     const result=await createUser(email,password)
     console.log(result)
+    await updateUsersProfile(image_url,name)
+
+    navigate(from,{replace:true})
   }
   catch(error){
     console.log(error.message)
@@ -25,6 +54,7 @@ const Registration = () => {
   try{
     const result=await signInGoogle()
     console.log(result)
+    navigate(from,{replace:true})
   }
   catch(error){
     console.log(error.message)
@@ -57,7 +87,7 @@ const Registration = () => {
                   <span className="label-text">Give Your Photo</span>
                 </label>
                 {/* -----need to input require */}
-                <input type="file" placeholder="email" className="input input-bordered"  />
+                <input type="file" onChange={handleFileChange} name="photo" placeholder="email" className="input input-bordered"  />
               </div>
               <div className="form-control">
                 <label className="label">

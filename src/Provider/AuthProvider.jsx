@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import app from "../Firebase/firebase.config";
+import axios from "axios"
 
 
 
@@ -23,8 +24,9 @@ const signin=(email,password)=>{
   return signInWithEmailAndPassword(auth,email,password)
 }
   
-const logOut=()=>{
+const logOut=async()=>{
   setLoading(true)
+  await axios.get(`${import.meta.env.VITE_API_URL}/logOut`,{withCredentials:true})
   return signOut(auth)
 }
 
@@ -41,13 +43,18 @@ const updateUsersProfile=(image,name)=>{
     displayName:name,
     photoURL:image
   })
+}
 
+const getToken= async(email)=>{
+  const {data}=await axios.post(`${import.meta.env.VITE_API_URL}/jwt`,{email},{withCredentials:true})
+  return data
 }
 
 useEffect(()=>{
   const unsubscribe= onAuthStateChanged(auth,currentUser=>{
     setUser(currentUser)
     console.log('currentUser---------->', currentUser)
+    getToken(currentUser.email)
     setLoading(false)
   })
   return ()=>{

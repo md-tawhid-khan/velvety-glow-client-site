@@ -6,7 +6,7 @@ import { useState } from "react";
 import { uploadImg } from "../../../ImageApi/ImageApi";
 
 const Registration = () => {
- const {createUser,signInGoogle,updateUsersProfile}=useAuth()
+ const {createUser,signInGoogle,updateUsersProfile,loading}=useAuth()
  const [file,setFile]=useState(null)
  const location=useLocation()
  const navigate=useNavigate()
@@ -16,7 +16,7 @@ const Registration = () => {
  const handleFileChange = (e) => {
   const selectedFile = e.target.files[0]; // Access the first file
   if (selectedFile) {
-    console.log("Selected File:", selectedFile); // Log the file details
+    // console.log("Selected File:", selectedFile); // Log the file details
     setFile(selectedFile); // Store file in state if needed
   } else {
     console.error("No file selected.");
@@ -34,11 +34,11 @@ const Registration = () => {
   }
   const email=form.email.value;
   const password=form.password.value;
-  console.log({name,image})
+  // console.log({name,image})
   try{
     
     const image_url=await uploadImg(image)
-    // console.log({image_url})
+    console.log({image_url})
     const result=await createUser(email,password)
     console.log(result)
     await updateUsersProfile(image_url,name)
@@ -60,6 +60,8 @@ const Registration = () => {
     console.log(error.message)
   }
 }
+
+
 
     return (
         <>
@@ -105,10 +107,10 @@ const Registration = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary">Registration</button>
+                <button disabled={loading} className="btn btn-primary">Registration</button>
               </div>
             </form>
-              <button onClick={googleLogIn} className="btn btn-active"><span className="text-2xl">Google Signin </span><FaGoogle className="text-2xl"/></button>
+              <button  onClick={googleLogIn} className="btn btn-active"><span className="text-2xl">Google Signin </span><FaGoogle className="text-2xl"/></button>
             <p className="p-5">if you have already an account <Link to='/sign-in' className="btn-link"> sign in</Link></p>
           </div>
           </div>

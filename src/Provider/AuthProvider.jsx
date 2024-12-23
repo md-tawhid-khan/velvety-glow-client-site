@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStat
 import app from "../Firebase/firebase.config";
 import axios from "axios"
 import useAxiosPublic from "../CustomeHook/useAxiosPublic";
+import { useMutation } from "@tanstack/react-query";
 
 
 
@@ -53,14 +54,40 @@ const getToken= async(email)=>{
 }
 
 //-------- mutation use to put data in user collection ------------
+const {mutateAsync}=useMutation({
+  mutationFn:async(userInfo)=>{
+  const {data}= await axiosPublic.patch('/user',userInfo)
+  // console.log(data)
+  return data
+  }
+})
 
+//---------- save user information ----------
+
+const userInformation =async(user)=>{
+  const currentUser={
+    name:user?.displayName,
+    email:user?.email,
+    image:user?.photoURL,
+    role:'user',
+    status:'varified',
+  }
+  if(user.displayName){
+    // console.log('user for send collection -----', currentUser)
+  await mutateAsync(currentUser)
+  }
+  
+}
 
 
 useEffect(()=>{
-  const unsubscribe= onAuthStateChanged(auth,currentUser=>{
+  const unsubscribe= onAuthStateChanged(auth,async currentUser=>{
     setUser(currentUser)
     console.log('currentUser---------->', currentUser)
-    getToken(currentUser.email)
+    if(currentUser){
+     await getToken(currentUser?.email)
+    await userInformation(currentUser)
+    }  
     setLoading(false)
   })
   return ()=>{
